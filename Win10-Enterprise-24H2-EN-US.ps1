@@ -18,6 +18,18 @@ Import-Module OSD -Force
 Write-Host  -ForegroundColor Green "Start OSDCloud"
 Start-OSDCloud -OSLanguage en-us -OSBuild 24H2 -OSEdition Pro -ZTI
 
+#================================================
+#   WinPE PostOS Sample
+#   OOBEDeploy Offline Staging
+#================================================
+$Params = @{
+    Autopilot = $false
+    RemoveAppx = "CommunicationsApps","OfficeHub","People","Skype","Solitaire","Xbox","ZuneMusic","ZuneVideo"
+    UpdateDrivers = $true
+    UpdateWindows = $true
+}
+Start-OOBEDeploy @Params
+
 #Restart from WinPE
 Write-Host  -ForegroundColor Green "Restarting in 20 seconds!"
 Start-Sleep -Seconds 20
