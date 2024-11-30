@@ -37,9 +37,9 @@ function Step-KeyboardLanguage {
     
     Start-Sleep -Seconds 5
     
-    $LanguageList = Get-WinUserLanguageList
+#    $LanguageList = Get-WinUserLanguageList
 #    $LanguageList.Remove(($LanguageList | Where-Object LanguageTag -like 'en-US'))
-    Set-WinUserLanguageList $LanguageList -Force | Out-Null
+#    Set-WinUserLanguageList $LanguageList -Force | Out-Null
 }
 function Step-oobeSetDisplay {
     [CmdletBinding()]
