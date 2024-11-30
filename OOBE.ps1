@@ -24,23 +24,6 @@ $Global:oobeCloud = @{
     oobeRestartComputer = $true
     oobeStopComputer = $false
 }
-
-function Step-KeyboardLanguage {
-
-    Write-Host -ForegroundColor Green "Set keyboard language to en-US"
-    Start-Sleep -Seconds 5
-    
-    $LanguageList = Get-WinUserLanguageList
-    
-    $LanguageList.Add("en-US")
-    Set-WinUserLanguageList $LanguageList -Force | Out-Null
-    
-    Start-Sleep -Seconds 5
-    
-#    $LanguageList = Get-WinUserLanguageList
-#    $LanguageList.Remove(($LanguageList | Where-Object LanguageTag -like 'en-US'))
-#    Set-WinUserLanguageList $LanguageList -Force | Out-Null
-}
 function Step-oobeSetDisplay {
     [CmdletBinding()]
     param ()
