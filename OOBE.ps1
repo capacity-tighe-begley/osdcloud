@@ -24,6 +24,23 @@ $Global:oobeCloud = @{
     oobeRestartComputer = $true
     oobeStopComputer = $false
 }
+
+function Step-KeyboardLanguage {
+
+    Write-Host -ForegroundColor Green "Set keyboard language to de-CH"
+    Start-Sleep -Seconds 5
+    
+    $LanguageList = Get-WinUserLanguageList
+    
+    $LanguageList.Add("de-CH")
+    Set-WinUserLanguageList $LanguageList -Force | Out-Null
+    
+    Start-Sleep -Seconds 5
+    
+    $LanguageList = Get-WinUserLanguageList
+    $LanguageList.Remove(($LanguageList | Where-Object LanguageTag -like 'en-US'))
+    Set-WinUserLanguageList $LanguageList -Force | Out-Null
+}
 function Step-oobeSetDisplay {
     [CmdletBinding()]
     param ()
@@ -244,6 +261,30 @@ function Step-oobeUpdateWindows {
         }
     }
 }
+function Invoke-Webhook {
+    $BiosSerialNumber = Get-MyBiosSerialNumber
+    $ComputerManufacturer = Get-MyComputerManufacturer
+    $ComputerModel = Get-MyComputerModel
+    
+    $URI = 'https://XXXX.webhook.office.com/webhookb2/YYYY'
+    $JSON = @{
+        "@type"    = "MessageCard"
+        "@context" = "<http://schema.org/extensions>"
+        "title"    = 'OSDCloud Information'
+        "text"     = "The following client has been successfully deployed:<br>
+                    BIOS Serial Number: **$($BiosSerialNumber)**<br>
+                    Computer Manufacturer: **$($ComputerManufacturer)**<br>
+                    Computer Model: **$($ComputerModel)**"
+        } | ConvertTo-JSON
+        
+        $Params = @{
+        "URI"         = $URI
+        "Method"      = 'POST'
+        "Body"        = $JSON
+        "ContentType" = 'application/json'
+        }
+        Invoke-RestMethod @Params | Out-Null
+}
 
 function Step-oobeRestartComputer {
     [CmdletBinding()]
@@ -270,7 +311,7 @@ function Step-oobeStopComputer {
 #endregion
 
 # Execute functions
-#Step-KeyboardLanguage
+Step-KeyboardLanguage
 Step-oobeExecutionPolicy
 Step-oobePackageManagement
 Step-oobeTrustPSGallery
@@ -282,7 +323,7 @@ Step-oobeRemoveAppxPackage
 Step-oobeAddCapability
 Step-oobeUpdateDrivers
 Step-oobeUpdateWindows
-#Invoke-Webhook
+Invoke-Webhook
 Step-oobeRestartComputer
 Step-oobeStopComputer
 #=================================================
