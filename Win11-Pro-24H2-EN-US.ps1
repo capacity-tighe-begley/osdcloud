@@ -16,7 +16,7 @@ Import-Module OSD -Force
 
 #Start OSDCloud ZTI the RIGHT way
 Write-Host  -ForegroundColor Green "Start OSDCloud"
-Start-OSDCloud -OSLanguage en-us -OSBuild 24H2 -OSEdition Pro -ZTI -OSActivation Retail
+Start-OSDCloud -OSVersion "Windows 11" -OSLanguage en-us -OSBuild 24H2 -OSEdition Pro -ZTI -OSActivation Retail
 
 #Restart from WinPE
 Write-Host  -ForegroundColor Green "Restarting in 20 seconds!"
