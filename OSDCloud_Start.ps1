@@ -10,4 +10,4 @@ Import-Module OSD -Force
 
 #Start OSDCloudScriptPad
 Write-Host -ForegroundColor Green "Start OSDPad"
-Start-OSDPad -RepoOwner capacity-tighe-begley -RepoName OSDCloud -RepoFolder ScriptPad -BrandingTitle 'Capacity OSD Cloud Deployment'
+Start-OSDPad -RepoOwner capacity-tighe-begley -RepoName OSDCloud -RepoFolder ScriptPad -BrandingTitle 'Capacity OSD Cloud Deployment' -Hide Script
