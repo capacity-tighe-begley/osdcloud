@@ -27,12 +27,12 @@ $Global:oobeCloud = @{
 
 function Step-KeyboardLanguage {
 
-    Write-Host -ForegroundColor Green "Set keyboard language to de-CH"
+    Write-Host -ForegroundColor Green "Set keyboard language to en-US"
     Start-Sleep -Seconds 5
     
     $LanguageList = Get-WinUserLanguageList
     
-    $LanguageList.Add("de-CH")
+    $LanguageList.Add("en-US")
     Set-WinUserLanguageList $LanguageList -Force | Out-Null
     
     Start-Sleep -Seconds 5
@@ -97,7 +97,7 @@ function Step-oobePackageManagement {
         }
         else {
             Write-Host -ForegroundColor Cyan 'Install-Package PackageManagement,PowerShellGet'
-            Install-Package -Name PowerShellGet -MinimumVersion 2.2.5 -Force -Confirm:$false -Source PSGallery | Out-Null
+            Install-Package -Name PowerShellGet -MinimumVersion 2.2.5 -Force -Confirm:$false | Out-Null
     
             Write-Host -ForegroundColor Cyan 'Import-Module PackageManagement,PowerShellGet'
             Import-Module PackageManagement,PowerShellGet -Force
@@ -261,7 +261,7 @@ function Step-oobeUpdateWindows {
         }
     }
 }
-function Invoke-Webhook {
+<# function Invoke-Webhook {
     $BiosSerialNumber = Get-MyBiosSerialNumber
     $ComputerManufacturer = Get-MyComputerManufacturer
     $ComputerModel = Get-MyComputerModel
@@ -284,7 +284,7 @@ function Invoke-Webhook {
         "ContentType" = 'application/json'
         }
         Invoke-RestMethod @Params | Out-Null
-}
+} #>
 
 function Step-oobeRestartComputer {
     [CmdletBinding()]
@@ -323,7 +323,7 @@ Step-oobeRemoveAppxPackage
 Step-oobeAddCapability
 Step-oobeUpdateDrivers
 Step-oobeUpdateWindows
-Invoke-Webhook
+#Invoke-Webhook
 Step-oobeRestartComputer
 Step-oobeStopComputer
 #=================================================

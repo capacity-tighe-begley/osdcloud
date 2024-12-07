@@ -7,10 +7,10 @@ if ((Get-MyComputerModel) -match 'Virtual') {
 }
 
 Write-Host -ForegroundColor Green "Updating OSD PowerShell Module"
-Install-Module OSD -Force
+Install-Module OSD -Force -SkipPublisherCheck
 
 Write-Host  -ForegroundColor Green "Importing OSD PowerShell Module"
-Import-Module OSD -Force   
+Import-Module OSD -Force -SkipPublisherCheck
 
 #=======================================================================
 #   [OS] Params and Start-OSDCloud
@@ -85,7 +85,7 @@ $OOBEDeployJson | Out-File -FilePath "C:\ProgramData\OSDeploy\OSDeploy.OOBEDeplo
 #================================================
 Write-Host -ForegroundColor Green "Define Computername:"
 $Serial = Get-WmiObject Win32_bios | Select-Object -ExpandProperty SerialNumber
-$TargetComputername = $Serial.Substring(4,3)
+#$TargetComputername = $Serial.Substring(4,4)
 
 $AssignedComputerName = "$TargetComputername"
 Write-Host -ForegroundColor Red $AssignedComputerName
