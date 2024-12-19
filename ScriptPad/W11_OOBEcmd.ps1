@@ -130,12 +130,12 @@ Start /Wait PowerShell -NoL -C Install-Module AutopilotOOBE -Force -Verbose
 Start /Wait PowerShell -NoL -C Install-Module OSD -Force -Verbose
 Start /Wait PowerShell -NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/capacity-tighe-begley/osdcloud/refs/heads/main/Set-KeyboardLanguage.ps1
 Start /Wait PowerShell -NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/capacity-tighe-begley/osdcloud/refs/heads/main/Install-EmbeddedProductKey.ps1
-Start /Wait PowerShell -NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/capacity-tighe-begley/osdcloud/refs/heads/main/check-autopilotprereq.ps1
+#Start /Wait PowerShell -NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/capacity-tighe-begley/osdcloud/refs/heads/main/check-autopilotprereq.ps1
 # Start /Wait PowerShell -NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/capacity-tighe-begley/osdcloud/refs/heads/main/start-autopilotoobe.ps1
 Start /Wait PowerShell -NoL -C Start-OOBEDeploy
 # Start /Wait PowerShell -NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/capacity-tighe-begley/osdcloud/refs/heads/main/TPM.ps1
 # Start /Wait PowerShell -NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/capacity-tighe-begley/osdcloud/refs/heads/main/Lenovo_BIOS_Settings.ps1
-Start /Wait PowerShell -NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/capacity-tighe-begley/osdcloud/refs/heads/main/cleanup.ps1
+#Start /Wait PowerShell -NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/capacity-tighe-begley/osdcloud/refs/heads/main/cleanup.ps1
 Start /Wait PowerShell -NoL -C Restart-Computer -Force
 '@
 $OOBECMD | Out-File -FilePath 'C:\Windows\System32\OOBE.cmd' -Encoding ascii -Force
@@ -147,13 +147,12 @@ Write-Host -ForegroundColor Green "Create C:\Windows\Setup\Scripts\SetupComplete
 $SetupCompleteCMD = @'
 powershell.exe -Command Set-ExecutionPolicy RemoteSigned -Force
 powershell.exe -Command "& {IEX (IRM https://raw.githubusercontent.com/capacity-tighe-begley/osdcloud/refs/heads/main/oobetasks.ps1)}"
-powershell.exe -Command "& {IEX (IRM https://raw.githubusercontent.com/capacity-tighe-begley/osdcloud/refs/heads/main/jumpcloud-autopilot.ps1)}"
 '@
 $SetupCompleteCMD | Out-File -FilePath 'C:\Windows\Setup\Scripts\SetupComplete.cmd' -Encoding ascii -Force
 
 #=======================================================================
 #   Restart-Computer
 #=======================================================================
-Write-Host  -ForegroundColor Green "Restarting in 20 seconds!"
-Start-Sleep -Seconds 20
+Write-Host  -ForegroundColor Green "Restarting in 10 seconds!"
+Start-Sleep -Seconds 10
 wpeutil reboot
