@@ -883,10 +883,10 @@ Start-Process PowerShell -ArgumentList "-NoL -C Invoke-WebPSScript https://raw.g
 # Start-Process PowerShell -ArgumentList "-NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/capacity-tighe-begley/osdcloud/refs/heads/main/jumpcloud-autopilot.ps1" -Wait
 
 # Write-Host -ForegroundColor DarkGray "Executing UWScript"
-Start-Process PowerShell -ArgumentList "-NoL -C Remove-AppxProvisionedPackage -AllUsers -Online -ErrorAction SilentlyContinue" -Wait
+Start-Process PowerShell -ArgumentList "-NoL -C Get-AppxProvisionedPackage -Online | Where-Object { $appxPackages -contains $_.DisplayName } | Remove-AppxProvisionedPackage -AllUsers -Online -ErrorAction SilentlyContinue" -Wait
 
 #
-Start-Process PowerShell -ArgumentList "-NoL -C Remove-WindowsCapability -Online -ErrorAction SilentlyContinue" -Wait
+Start-Process PowerShell -ArgumentList "-NoL -C Get-WindowsCapability -Online | Where-Object { $capabilities -contains ($_.Name -split '~')[0] } | Remove-WindowsCapability -Online -ErrorAction SilentlyContinue" -Wait
 
 #
 Start-Process PowerShell -ArgumentList "-NoL -C Remove-OneDrive" -Wait
