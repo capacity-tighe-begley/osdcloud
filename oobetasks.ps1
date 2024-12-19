@@ -34,7 +34,7 @@ Start-Process PowerShell -ArgumentList "-NoL -C Invoke-WebPSScript https://raw.g
 # Start-Process PowerShell -ArgumentList "-NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/capacity-tighe-begley/osdcloud/refs/heads/main/jumpcloud-autopilot.ps1" -Wait
 
 # Write-Host -ForegroundColor DarkGray "Remove Bloatware"
-Start-Process PowerShell -ArgumentList "-NoL -C https://raw.githubusercontent.com/capacity-tighe-begley/osdcloud/refs/heads/main/OOBE-removebloatware.ps1" -Wait
+Start-Process PowerShell -ArgumentList "-NoL -C https://raw.githubusercontent.com/capacity-tighe-begley/osdcloud/refs/heads/main/ppkg.ps1" -Wait
 
 Write-Host -ForegroundColor DarkGray "Executing OOBEDeploy Script fomr OSDCloud Module"
 Start-Process PowerShell -ArgumentList "-NoL -C Start-OOBEDeploy" -Wait
