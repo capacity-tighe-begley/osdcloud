@@ -1,6 +1,8 @@
 # Starting Transcript
 Start-Transcript -OutputDirectory c:\AutoPilot -Verbose -ErrorAction Continue
 
+$api = 'jca_7DWTadSAwKZQ27pgc6dNWiYuDRN4cGoY8Po0'
+
 # Wait for successful network connection 
 
 do {
