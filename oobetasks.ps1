@@ -12,17 +12,20 @@ $OOBEScript =@"
 `$Global:Transcript = "`$((Get-Date).ToString('yyyy-MM-dd-HHmmss'))-OOBEScripts.log"
 Start-Transcript -Path (Join-Path "`$env:ProgramData\Microsoft\IntuneManagementExtension\Logs\OSD\" `$Global:Transcript) -ErrorAction Ignore | Out-Null
 
+#
+Start-Process Powershell -ArgumentList "-NoL -C New-LocalUser 'capacity-deploy' -NoPassword | Add-LocalGroupMember 'Administrators' -Member 'capacity-deploy'" -Wait
+
 # Write-Host -ForegroundColor DarkGray "Installing AutopilotOOBE PS Module"
 # Start-Process PowerShell -ArgumentList "-NoL -C Install-Module AutopilotOOBE -Force -Verbose" -Wait
 
 Write-Host -ForegroundColor DarkGray "Installing OSD PS Module"
 Start-Process PowerShell -ArgumentList "-NoL -C Install-Module OSD -Force -Verbose" -Wait
 
-Write-Host -ForegroundColor DarkGray "Executing Keyboard Language Skript"
-Start-Process PowerShell -ArgumentList "-NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/capacity-tighe-begley/osdcloud/refs/heads/main/Set-KeyboardLanguage.ps1" -Wait
+# Write-Host -ForegroundColor DarkGray "Executing Keyboard Language Skript"
+# Start-Process PowerShell -ArgumentList "-NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/capacity-tighe-begley/osdcloud/refs/heads/main/Set-KeyboardLanguage.ps1" -Wait
 
-Write-Host -ForegroundColor DarkGray "Executing Product Key Script"
-Start-Process PowerShell -ArgumentList "-NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/capacity-tighe-begley/osdcloud/refs/heads/main/Install-EmbeddedProductKey.ps1" -Wait
+# Write-Host -ForegroundColor DarkGray "Executing Product Key Script"
+# Start-Process PowerShell -ArgumentList "-NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/capacity-tighe-begley/osdcloud/refs/heads/main/Install-EmbeddedProductKey.ps1" -Wait
 
 # Write-Host -ForegroundColor DarkGray "Executing Autopilot Check Script"
 # Start-Process PowerShell -ArgumentList "-NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/capacity-tighe-begley/osdcloud/refs/heads/main/check-autopilotprereq.ps1" -Wait
@@ -32,9 +35,6 @@ Start-Process PowerShell -ArgumentList "-NoL -C Invoke-WebPSScript https://raw.g
 
 # Write-Host -ForegroundColor DarkGray "Executing JumpCloud Enrollment"
 # Start-Process PowerShell -ArgumentList "-NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/capacity-tighe-begley/osdcloud/refs/heads/main/jumpcloud-autopilot.ps1" -Wait
-
-# Write-Host -ForegroundColor DarkGray "Remove Bloatware"
-Start-Process PowerShell -ArgumentList "-NoL -C https://raw.githubusercontent.com/capacity-tighe-begley/osdcloud/refs/heads/main/ppkg.ps1" -Wait
 
 Write-Host -ForegroundColor DarkGray "Executing OOBEDeploy Script fomr OSDCloud Module"
 Start-Process PowerShell -ArgumentList "-NoL -C Start-OOBEDeploy" -Wait
@@ -81,7 +81,7 @@ Out-File -FilePath $ScriptPathSendKeys -InputObject $SendKeysScript -Encoding as
 Write-Host -ForegroundColor Gray "Download ServiceUI.exe from GitHub Repo"
 Invoke-WebRequest https://github.com/AkosBakos/Tools/raw/main/ServiceUI64.exe -OutFile "C:\OSDCloud\ServiceUI.exe"
 
-#Create Scheduled Task for SendKeys with 15 seconds delay
+#Create Scheduled Task for SendKeys with 5 seconds delay
 $TaskName = "Scheduled Task for SendKeys"
 
 $ShedService = New-Object -comobject 'Schedule.Service'
@@ -94,7 +94,7 @@ $Task.Settings.AllowDemandStart = $true
 
 # https://msdn.microsoft.com/en-us/library/windows/desktop/aa383987(v=vs.85).aspx
 $trigger = $task.triggers.Create(9) # 0 EventTrigger, 1 TimeTrigger, 2 DailyTrigger, 3 WeeklyTrigger, 4 MonthlyTrigger, 5 MonthlyDOWTrigger, 6 IdleTrigger, 7 RegistrationTrigger, 8 BootTrigger, 9 LogonTrigger
-$trigger.Delay = 'PT15S'
+$trigger.Delay = 'PT5S'
 $trigger.Enabled = $true
 
 $action = $Task.Actions.Create(0)

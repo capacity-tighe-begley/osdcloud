@@ -121,28 +121,6 @@ Write-Host ""
 # $AutopilotOOBEJson | Out-File -FilePath "C:\ProgramData\OSDeploy\OSDeploy.AutopilotOOBE.json" -Encoding ascii -Force
 
 #================================================
-#  [PostOS] AutopilotOOBE CMD Command Line
-#================================================
-Write-Host -ForegroundColor Green "Create C:\Windows\System32\OOBE.cmd"
-$OOBECMD = @'
-PowerShell -NoL -Com Set-ExecutionPolicy RemoteSigned -Force
-Set Path = %PATH%;C:\Program Files\WindowsPowerShell\Scripts
-#Start /Wait PowerShell -NoL -C Install-Module AutopilotOOBE -Force -Verbose
-Start /Wait PowerShell -NoL -C Install-Module OSD -Force -Verbose
-Start /Wait PowerShell -NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/capacity-tighe-begley/osdcloud/refs/heads/main/Set-KeyboardLanguage.ps1
-Start /Wait PowerShell -NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/capacity-tighe-begley/osdcloud/refs/heads/main/Install-EmbeddedProductKey.ps1
-#Start /Wait PowerShell -NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/capacity-tighe-begley/osdcloud/refs/heads/main/check-autopilotprereq.ps1
-# Start /Wait PowerShell -NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/capacity-tighe-begley/osdcloud/refs/heads/main/start-autopilotoobe.ps1
-Start /Wait Powershell -NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/capacity-tighe-begley/osdcloud/refs/heads/main/jumpcloud-autopilot.ps1
-Start /Wait PowerShell -NoL -C Start-OOBEDeploy
-# Start /Wait PowerShell -NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/capacity-tighe-begley/osdcloud/refs/heads/main/TPM.ps1
-# Start /Wait PowerShell -NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/capacity-tighe-begley/osdcloud/refs/heads/main/Lenovo_BIOS_Settings.ps1
-#Start /Wait PowerShell -NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/capacity-tighe-begley/osdcloud/refs/heads/main/cleanup.ps1
-Start /Wait PowerShell -NoL -C Restart-Computer -Force
-'@
-$OOBECMD | Out-File -FilePath 'C:\Windows\System32\OOBE.cmd' -Encoding ascii -Force
-
-#================================================
 #  [PostOS] SetupComplete CMD Command Line
 #================================================
 Write-Host -ForegroundColor Green "Create C:\Windows\Setup\Scripts\SetupComplete.cmd"
