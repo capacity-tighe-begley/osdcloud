@@ -1,0 +1,2 @@
+Invoke-WebRequest https://raw.githubusercontent.com/capacity-tighe-begley/osdcloud/refs/heads/main/ppkg.ps1 -OutFile C:\OSDCloud\jumpcloud_ppkg.ppkg
+Install-ProvisioningPackage -PackagePath C:\OSDCloud\jumpcloud_ppkg.ppkg
