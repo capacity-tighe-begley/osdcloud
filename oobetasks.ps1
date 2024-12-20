@@ -8,7 +8,7 @@ If(!(Test-Path -Path $scriptFolderPath)) {
     New-Item -Path $scriptFolderPath -ItemType Directory -Force | Out-Null
 }
 
-$OOBEautounattend =@"
+@"
 <?xml version="1.0" encoding="utf-8"?>
 <unattend xmlns="urn:schemas-microsoft-com:unattend" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State">
   <!-- UnattendedWinstall https://github.com/memstechtips/UnattendedWinstall -->
@@ -299,7 +299,7 @@ $trigger.Enabled = $true
 
 $action = $Task.Actions.Create(0)
 $action.Path = 'C:\OSDCloud\ServiceUI.exe'
-$action.Arguments = '-process:RuntimeBroker.exe C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.exe ' + "Start-Process @execute_sysprep" + ' -NoExit'
+$action.Arguments = '-process:RuntimeBroker.exe C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.exe ' + 'Start-Process @execute_sysprep ' + ' -NoExit'
 
 $taskFolder = $ShedService.GetFolder("\")
 # https://msdn.microsoft.com/en-us/library/windows/desktop/aa382577(v=vs.85).aspx
