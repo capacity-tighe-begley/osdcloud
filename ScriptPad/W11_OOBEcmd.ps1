@@ -124,11 +124,73 @@ Write-Host ""
 #  [PostOS] SetupComplete CMD Command Line
 #================================================
 Write-Host -ForegroundColor Green "Create C:\Windows\Setup\Scripts\SetupComplete.cmd"
-$SetupCompleteCMD = @'
-powershell.exe -Command Set-ExecutionPolicy RemoteSigned -Force
-# powershell.exe -Command "& {IEX (IRM https://raw.githubusercontent.com/capacity-tighe-begley/osdcloud/refs/heads/main/oobetasks.ps1)}"
-'@
-$SetupCompleteCMD | Out-File -FilePath 'C:\Windows\Setup\Scripts\SetupComplete.cmd' -Encoding ascii -Force
+@'
+<?xml version="1.0" encoding="utf-8"?>
+<unattend xmlns="urn:schemas-microsoft-com:unattend" xmlns:wcm="http://schemas.microsoft.com/WMIConfig/2002/State">
+  <!-- UnattendedWinstall https://github.com/memstechtips/UnattendedWinstall -->
+  <settings pass="oobeSystem">
+    <component name="Microsoft-Windows-International-Core" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+			<InputLocale>0409:00000409</InputLocale>
+			<SystemLocale>en-US</SystemLocale>
+			<UILanguage>en-US</UILanguage>
+			<UserLocale>en-US</UserLocale>
+	</component>
+    <component name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
+        <UserAccounts>
+				<AdministratorPassword>
+					<Value>Capacity2024!</Value>
+					<PlainText>true</PlainText>
+				</AdministratorPassword>
+	    </UserAccounts>
+			<AutoLogon>
+				<Username>Administrator</Username>
+				<Enabled>true</Enabled>
+				<LogonCount>1</LogonCount>
+				<Password>
+					<Value>Capacity2024!</Value>
+					<PlainText>true</PlainText>
+				</Password>
+			</AutoLogon>
+      <OOBE>
+        <HideEULAPage>true</HideEULAPage>
+        <HideOEMRegistrationScreen>true</HideOEMRegistrationScreen>
+        <HideOnlineAccountScreens>true</HideOnlineAccountScreens>
+        <HideWirelessSetupInOOBE>false</HideWirelessSetupInOOBE>
+        <NetworkLocation>Work</NetworkLocation>
+        <ProtectYourPC>3</ProtectYourPC>
+      </OOBE>
+      <FirstLogonCommands>
+        <SynchronousCommand>
+        <!-- Enables Network Adapters After OOBE Completes -->
+        <Order>1</Order>
+        <CommandLine>powershell.exe -NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -Command "Get-NetAdapter | Enable-NetAdapter -Confirm:$false"</CommandLine>
+        </SynchronousCommand>
+        <SynchronousCommand>
+        <!-- Install JumpCloud Agent -->
+        <Order>2</Order>
+        <CommandLine>powershell.exe -NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -Command "cd $env:temp | Invoke-Expression; Invoke-RestMethod -Method Get -URI https://raw.githubusercontent.com/TheJumpCloud/support/master/scripts/windows/InstallWindowsAgent.ps1 -OutFile InstallWindowsAgent.ps1 | Invoke-Expression; ./InstallWindowsAgent.ps1 -JumpCloudConnectKey "89637cc425cced127c0a316e5df3503a676a4389""</CommandLine>
+        </SynchronousCommand>
+        <SynchronousCommand>
+        <!-- Restart Computer -->
+        <Order>3</Order>
+        <CommandLine>powershell.exe -NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -Command "Restart-Computer"</CommandLine>
+        </SynchronousCommand>
+    </FirstLogonCommands>
+    </component>
+  </settings>
+  <Extensions>
+  </Extensions>
+</unattend>
+'@ | Out-File "$($env:windir)\temp\unattend.xml" -Encoding utf8
+
+$execute_sysprep = @{
+    FilePath     = "$($env:windir)\System32\Sysprep\sysprep.exe"
+    ArgumentList = "/oobe", "/quit", "/unattend:$($env:windir)\temp\unattend.xml"
+    PassThru     = $true
+    Wait         = $true
+}
+
+$execute_sysprep | Out-File -FilePath 'C:\Windows\Setup\Scripts\SetupComplete.cmd' -Encoding ascii -Force
 
 #=======================================================================
 #   Restart-Computer
