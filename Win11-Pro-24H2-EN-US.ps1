@@ -19,6 +19,6 @@ Write-Host  -ForegroundColor Green "Start OSDCloud"
 Start-OSDCloud -OSVersion "Windows 11" -OSLanguage en-us -OSBuild 24H2 -OSEdition Pro -ZTI -OSActivation Retail
 
 #Restart from WinPE
-Write-Host  -ForegroundColor Green "Restarting in 20 seconds!"
-Start-Sleep -Seconds 20
+Write-Host  -ForegroundColor Green "Restarting in 5 seconds!"
+Start-Sleep -Seconds 5
 wpeutil reboot
